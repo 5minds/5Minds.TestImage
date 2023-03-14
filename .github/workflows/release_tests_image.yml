@@ -11,6 +11,7 @@ env:
   IMAGE_NAME: "testimage"
   IMAGE_PLATFORMS: "linux/amd64,linux/arm64"
   CI_TOOLS_VERSION: "4.0.2"
+  CI_TOOLS_STABLE_BRANCH: "main"
 
 jobs:
   build_push_docker_image:
