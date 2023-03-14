@@ -44,10 +44,13 @@ jobs:
           node-version: 16.x
           registry-url: "https://registry.npmjs.org"
 
-      - name: Install CI Tools
-        run: npm i -g @5minds/product_ci_tools@${{ env.CI_TOOLS_VERSION }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: "Install CI tools"
+        run: sudo npm i -g @process-engine/ci_tools@${{ env.CI_TOOLS_VERSION }}
+
+      # - name: Install CI Tools
+      #   run: npm i -g @5minds/product_ci_tools@${{ env.CI_TOOLS_VERSION }}
+      #   env:
+      #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - uses: actions/checkout@v3
 
