@@ -1,0 +1,71 @@
+name: Publish test docker image
+
+on:
+  push:
+    branches:
+      - main
+      - release/*
+
+env:
+  DOCKER_REGISTRY: "ghcr.io"
+  IMAGE_NAME: "testimage"
+  IMAGE_PLATFORMS: "linux/amd64,linux/arm64"
+  CI_TOOLS_VERSION: "4.0.2"
+
+jobs:
+  build_push_docker_image:
+    name: "Build & publish docker image"
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Use Node.js 16.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: "https://registry.npmjs.org"
+
+      - name: "Install CI tools"
+        run: sudo npm i -g @process-engine/ci_tools@${{ env.CI_TOOLS_VERSION }}
+
+      - uses: actions/checkout@v3
+
+      - name: Prepare Version
+        run: ci_tools prepare-version --allow-dirty-workdir
+
+      - name: Set Version
+        run: echo "VERSION=$(ci_tools get-version)" >> $GITHUB_ENV
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+        with:
+          install: true
+
+      - name: Log in to the (Github) Container registry
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.DOCKER_REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set Docker tags
+        run: echo "DOCKER_TAGS=$DOCKER_REGISTRY/5minds/$IMAGE_NAME:$VERSION" >> $GITHUB_ENV
+
+      - name: Build and push
+        uses: docker/build-push-action@v3
+        with:
+          push: true
+          load: false
+          context: .
+          tags: ${{ env.DOCKER_TAGS }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,mode=max,dest=/tmp/.buildx-cache-new
+          platforms: ${{ env.IMAGE_PLATFORMS }}
+
+      - name: Commit & Tag Version
+        run: ci_tools commit-and-tag-version --only-on-primary-branches
+        env:
+          GH_USER: ${{ secrets.GH_USER }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

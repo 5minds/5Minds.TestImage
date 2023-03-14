@@ -1,0 +1,15 @@
+{
+  "name": "5minds.testimage",
+  "version": "0.0.1",
+  "description": "test",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/5minds/5Minds.TestImage.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/5minds/5Minds.TestImage/issues"
+  },
+  "homepage": "https://github.com/5minds/5Minds.TestImage#readme"
+}
