@@ -32,6 +32,8 @@ jobs:
         run: sudo npm i -g @process-engine/ci_tools@${{ env.CI_TOOLS_VERSION }}
 
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
 
       - name: Prepare Version
         run: ci_tools prepare-version --allow-dirty-workdir
