@@ -16,26 +16,26 @@ ENV ROBOT_FRAMEWORK_VERSION 5.0
 
 # Install system dependencies
 RUN apt-get update && \
-    apt-get -y install sudo \
-    unzip \
-    libxi6 \
-    npm \
-    nodejs \
-    libgconf-2-4 \
-    locales \
-    libnss3 \
-    libnspr4 \
-    libasound2 \
-    netcat \
-    gnupg \
-    python3-pip \
-    python3-dev \
-    python3-tk \
-    libgtk-3-dev \
-    tzdata \
-    xvfb \
-    scrot \
-    locales locales-all \
+  apt-get -y install sudo \
+  unzip \
+  libxi6 \
+  npm \
+  nodejs \
+  libgconf-2-4 \
+  locales \
+  libnss3 \
+  libnspr4 \
+  libasound2 \
+  netcat \
+  gnupg \
+  python3-pip \
+  python3-dev \
+  python3-tk \
+  libgtk-3-dev \
+  tzdata \
+  xvfb \
+  scrot \
+  locales locales-all \
   && apt-get clean all
 
 
@@ -59,7 +59,7 @@ ENV ROBOT_GID 1000
 
 # Prepare binaries to be executed
 COPY scripts/run-tests-in-virtual-screen.sh /opt/robotframework/bin/
-
+COPY requirements.txt /opt/robotframework/requirements.txt
 
 # Install Robot Framework and associated libraries
 RUN pip3 install \
@@ -68,7 +68,7 @@ RUN pip3 install \
   PyYAML
 
 WORKDIR /opt/robotframework/
-RUN pip3 install robotframework-browser==14.1.0 --no-cache-dir
+RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN rfbrowser init
 
