@@ -1,2 +1,2 @@
-robotframework-browser==14.1.0
+robotframework-browser==16.0.2
 robotframework-screencaplibrary==1.6.0

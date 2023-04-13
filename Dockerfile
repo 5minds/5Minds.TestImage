@@ -12,7 +12,7 @@ ENV ROBOT_TESTS_DIR /opt/robotframework/tests
 ENV ROBOT_WORK_DIR /opt/robotframework/temp
 
 # Dependency versions
-ENV ROBOT_FRAMEWORK_VERSION 5.0
+ENV ROBOT_FRAMEWORK_VERSION 6.0
 
 # Install system dependencies
 RUN apt-get update && \

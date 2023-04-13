@@ -24,3 +24,11 @@ services:
 
 Die Robot Dateien bzw. alles was benötigt wird, kommt muss in das Verzeichnis "/opt/robotframework/tests" gemoutet werden.
 Die Rebots kommen aus dem Verzeichnis "/opt/robotframework/reports"
+
+Es werden folgende Versionen installiert:
+```
+robotframework-browser==16.0.2
+robotframework-screencaplibrary==1.6.0
+```
+
+Die screencaplibrary dient zum aufnehmen von Videos beim Testen.
