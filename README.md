@@ -9,7 +9,7 @@ Beispiel `docker-compose.yml`
 version: '3.5'
 services:
   test:
-    image: ghcr.io/5minds/testimage:0.0.1
+    image: ghcr.io/5minds/testimage:0.0.2
     network_mode: host
     volumes:
       - ./integration-tests:/opt/robotframework/tests

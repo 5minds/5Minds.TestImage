@@ -12,7 +12,10 @@ ENV ROBOT_TESTS_DIR /opt/robotframework/tests
 ENV ROBOT_WORK_DIR /opt/robotframework/temp
 
 # Dependency versions
-ENV ROBOT_FRAMEWORK_VERSION 5.0
+ENV ROBOT_FRAMEWORK_VERSION 6.1
+ENV BROWSER_LIBRARY_VERSION 16.2.0
+ENV ROBOTFRAMEWORK_SCREENCAPLIB 1.6.0
+ENV NODEJSVERSION setup_18.x
 
 # Install system dependencies
 RUN apt-get update && \
@@ -20,7 +23,7 @@ RUN apt-get update && \
   unzip \
   libxi6 \
   npm \
-  nodejs \
+  curl \
   libgconf-2-4 \
   locales \
   libnss3 \
@@ -38,6 +41,8 @@ RUN apt-get update && \
   locales locales-all \
   && apt-get clean all
 
+RUN curl -sL https://deb.nodesource.com/$NODEJSVERSION  | bash -
+RUN apt-get -y install nodejs
 
 # Set the locale to german
 RUN sed -i 's/^# *\(de_DE.UTF-8\)/\1/' /etc/locale.gen
@@ -47,7 +52,6 @@ ENV LC_ALL de_DE.UTF-8
 ENV LANG de_DE.UTF-8
 ENV LANGUAGE de_DE.UTF-8
 ENV TZ CET
-
 
 # Set number of threads for parallel execution
 # By default, no parallelisation
@@ -59,16 +63,14 @@ ENV ROBOT_GID 1000
 
 # Prepare binaries to be executed
 COPY scripts/run-tests-in-virtual-screen.sh /opt/robotframework/bin/
-COPY requirements.txt /opt/robotframework/requirements.txt
 
 # Install Robot Framework and associated libraries
 RUN pip3 install \
   --no-cache-dir \
   robotframework==$ROBOT_FRAMEWORK_VERSION \
+  robotframework-browser==$BROWSER_LIBRARY_VERSION \
+  robotframework-screencaplibrary==$ROBOTFRAMEWORK_SCREENCAPLIB \
   PyYAML
-
-WORKDIR /opt/robotframework/
-RUN pip3 install --no-cache-dir -r requirements.txt
 
 RUN rfbrowser init
 
